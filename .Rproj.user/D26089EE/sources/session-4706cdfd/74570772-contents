@@ -97,7 +97,7 @@ format: html
   startBtn.addEventListener('click', startSession);
 
   function redirectToPhotostrip() {
-    window.location.href = 'photostrip.qmd';  // Redirect to the page where the photostrip is displayed
+    window.location.href = 'photostrip.html';  // Redirect to the page where the photostrip is displayed
   }
 </script>
 ```
