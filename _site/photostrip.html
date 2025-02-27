@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Genic Photobooth - Genic-photobooth</title>
+<title>GENIC - Photostrip Viewer</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -70,7 +70,7 @@ ul.task-list li input[type="checkbox"] {
 
 </head>
 
-<body class="nav-fixed">
+<body class="nav-fixed fullcontent">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -78,7 +78,7 @@ ul.task-list li input[type="checkbox"] {
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="./index.html">
-    <span class="navbar-title">Genic Photobooth</span>
+    <span class="navbar-title">GENIC</span>
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
@@ -88,7 +88,7 @@ ul.task-list li input[type="checkbox"] {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link active" href="./Genic-photobooth.html" aria-current="page"> 
+    <a class="nav-link" href="./home.html"> 
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
@@ -106,21 +106,13 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">On this page</h2>
-   
-  <ul>
-  <li><a href="#quarto" id="toc-quarto" class="nav-link active" data-scroll-target="#quarto">Quarto</a></li>
-  </ul>
-</nav>
-    </div>
+    
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Genic-photobooth</h1>
+<h1 class="title">Photostrip Viewer</h1>
 </div>
 
 
@@ -137,12 +129,65 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="quarto" class="level2">
-<h2 class="anchored" data-anchor-id="quarto">Quarto</h2>
-<p>Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <a href="https://quarto.org" class="uri">https://quarto.org</a>.</p>
+<!-- Photostrip container styled to look like a classic photobooth strip -->
+<div id="photostrip" style="width: 220px; margin: 20px auto; border: 1px solid black; background-color: #f0f0f0; padding: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+
+</div>
+<!-- Button to trigger the download -->
+<button id="download-button" style="display: block; margin: 20px auto; padding: 10px 20px;">
+Download Photostrip
+</button>
+<!-- Invisible canvas for compiling images -->
+<canvas id="canvas" style="display:none;">
+</canvas>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const images = JSON.parse(localStorage.getItem('photostripImages'));
+    if (images && images.length) {
+        const strip = document.getElementById('photostrip');
+        images.forEach(src => {
+            const img = document.createElement('img');
+            img.src = src;
+            img.style.width = '200px'; // Set width to fit the photostrip
+            img.style.display = 'block'; // Stack images vertically
+            img.style.marginBottom = '10px'; // Space between photos
+            strip.appendChild(img);
+        });
+
+        createDownloadableImage(images);
+    }
+});
+
+function createDownloadableImage(images) {
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = 220; // Width of the photostrip
+    let yOffset = 0;
+
+    images.forEach((src, index) => {
+        const img = new Image();
+        img.onload = function() {
+            if (index === 0) {
+                canvas.height = (img.height + 10) * images.length - 10; // Calculate total height with spacing
+            }
+            ctx.drawImage(img, 10, yOffset); // Center the image with some padding
+            yOffset += img.height + 10; // Move to the next position with spacing
+            if (index === images.length - 1) {
+                document.getElementById('download-button').onclick = function() {
+                    const dataURL = canvas.toDataURL('image/png');
+                    const link = document.createElement('a');
+                    link.download = 'photostrip.png';
+                    link.href = dataURL;
+                    link.click();
+                };
+            }
+        };
+        img.src = src;
+    });
+}
+</script>
 
 
-</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

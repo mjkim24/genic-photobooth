@@ -3,15 +3,15 @@ project:
 
 
 website:
-  title: "Genic Photobooth"
+  title: "GENIC"
   navbar:
     left:
       - text: "Home"
-        href: Genic-photobooth.qmd
+        href: home.qmd
       - text: "About"
         href: about.qmd
 
 format:
   html:
     theme: cosmo
-    toc: true
+    toc: false

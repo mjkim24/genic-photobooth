@@ -4,5 +4,17 @@
   },
   "about.qmd": {
     "about.html": "b2098735"
+  },
+  "home.qmd": {
+    "home.html": "b0d34f97"
+  },
+  "photobooth.qmd": {
+    "photobooth.html": "17e05207"
+  },
+  "welcome.qmd": {
+    "welcome.html": "fd69f055"
+  },
+  "photostrip.qmd": {
+    "photostrip.html": "c1cd23ca"
   }
 }

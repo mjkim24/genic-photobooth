@@ -1,0 +1,12 @@
+---
+title: "welcome"
+format: html
+---
+# Welcome!
+
+You have 3 seconds for each shot – no retakes!  
+This photobooth captures 4 pictures in a row, so strike your best pose and have fun!
+
+After the session, download your digital copy and share the fun!
+
+[START](photobooth.qmd){.btn .btn-primary}
