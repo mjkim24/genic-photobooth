@@ -1,7 +1,16 @@
----
-title: "GENIC"
----
+```{=html}
+<!-- Container for logo and instructional text -->
+<div style="text-align: center; margin-top: 50px;">
+  <a href="welcome.html">
+    <img src="logo.png" alt="GENIC Logo" style="width: 400px; height: auto;">
+  </a>
+  <p style="font-style: italic; margin-top: 20px; animation: blink-animation 2s linear infinite;">Click the logo to start</p>
+</div>
 
-Your personal GENIC photobooth at home.
-
-[Go to Photobooth](welcome.qmd){.btn .btn-primary}
+<style>
+  @keyframes blink-animation {
+    50% {
+      opacity: 0;
+    }
+  }
+</style>

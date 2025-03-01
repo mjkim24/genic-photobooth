@@ -1,10 +1,38 @@
 ---
 format: html
 ---
-# Welcome!
 
-You have 3 seconds for each shot – no retakes!  
+<style>
+  .btn {
+    color: #000000; /* Text color for general buttons */
+  }
+  .btn-primary {
+    border-radius: 3px;
+    border: 2px solid #000000; /* Ensures the border is visible and styled as intended */
+    background-color: #ffffff; /* Initial background color set to white */
+    color: #000000; /* Initial text color set to black */
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s; /* Smooth transition for color, background, and border color changes */
+    outline: none; /* Removes the outline on focus added by browsers by default */
+  }
+
+  .btn-primary:hover, .btn-primary:focus, .btn-primary:active {
+    background-color: #000000; /* Keeps background color black on hover, focus, and active */
+    color: #ffffff; /* Keeps text color white on hover, focus, and active */
+    border-color: #ffffff; /* Keeps border color white on hover, focus, and active */
+  }
+
+  /* Optionally, handle the case where the button is active (clicked) */
+  .btn-primary:active {
+    background-color: #000000; /* Even darker shade to indicate click, if desired */
+    border-color: #ffffff;
+  }
+</style>
+
+
+
+
+You have 3 seconds for each shot – no retakes!
 
 This photobooth captures 4 pictures in a row, so strike your best pose and have fun!
 
-[START](photobooth.qmd){.btn .btn-primary}
+[START](photobooth.html){.btn .btn-primary}  <!-- Ensure this links to an HTML file -->

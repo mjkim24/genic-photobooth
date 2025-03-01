@@ -113,29 +113,50 @@ ul.task-list li input[type="checkbox"] {
 
 
 
+<style>
+  .btn {
+    color: #000000; /* Text color for general buttons */
+  }
+  .btn-primary {
+    border-radius: 3px;
+    border: 2px solid #000000; /* Ensures the border is visible and styled as intended */
+    background-color: #ffffff; /* Initial background color set to white */
+    color: #000000; /* Initial text color set to black */
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s; /* Smooth transition for color, background, and border color changes */
+    outline: none; /* Removes the outline on focus added by browsers by default */
+  }
+
+  .btn-primary:hover, .btn-primary:focus, .btn-primary:active {
+    background-color: #000000; /* Keeps background color black on hover, focus, and active */
+    color: #ffffff; /* Keeps text color white on hover, focus, and active */
+    border-color: #ffffff; /* Keeps border color white on hover, focus, and active */
+  }
+
+  /* Optionally, handle the case where the button is active (clicked) */
+  .btn-primary:active {
+    background-color: #000000; /* Even darker shade to indicate click, if desired */
+    border-color: #ffffff;
+  }
+</style>
 <div style="margin-top: 1em; text-align:center;">
-  <button id="start-session" class="btn btn-primary">Start</button>
+<p><button id="start-session" class="btn btn-primary">Start</button></p>
 </div>
+<div id="countdown" style="font-weight:bold; font-size:1.5em; margin:1em 0; text-align:center;">
 
-<div id="countdown" style="font-weight:bold; font-size:1.5em; margin:1em 0; text-align:center;"></div>
-
+</div>
 <div style="display:flex; justify-content:space-between; align-items:flex-start;">
-  <video id="video" autoplay="" style="border:2px solid #ccc; border-radius:5px; width:640px; height:480px; margin-right:20px;"></video>
-  <div id="strip" style="
+<video id="video" autoplay="" style="border:2px solid #ccc; border-radius:5px; width:640px; height:480px; margin-right:20px;"></video>
+<div id="strip" style="
     display:flex; 
     flex-direction:row; 
     flex-wrap:wrap;
     align-items:center; 
     justify-content: space-around;
-    border:2px solid #ccc; 
-    padding:10px; 
-    background:#fff;
     width: 380px;
   ">
-    <!-- Photos will be displayed here -->
-  </div>
-</div>
 
+</div>
+</div>
 <script>
   const startBtn = document.getElementById('start-session');
   const countdownEl = document.getElementById('countdown');

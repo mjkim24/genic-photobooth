@@ -2,9 +2,9 @@
   {
     "objectID": "welcome.html",
     "href": "welcome.html",
-    "title": "Welcome!",
+    "title": "GENIC",
     "section": "",
-    "text": "Welcome!\nYou have 3 seconds for each shot – no retakes!\nThis photobooth captures 4 pictures in a row, so strike your best pose and have fun!\nSTART"
+    "text": "You have 3 seconds for each shot – no retakes!\nThis photobooth captures 4 pictures in a row, so strike your best pose and have fun!\nSTART"
   },
   {
     "objectID": "photobooth.html",
@@ -12,13 +12,6 @@
     "title": "GENIC",
     "section": "",
     "text": "Start"
-  },
-  {
-    "objectID": "home.html",
-    "href": "home.html",
-    "title": "GENIC",
-    "section": "",
-    "text": "Your personal GENIC photobooth at home.\nGo to Photobooth"
   },
   {
     "objectID": "about.html",
@@ -40,5 +33,12 @@
     "title": "Photostrip Viewer",
     "section": "",
     "text": "Download Photostrip"
+  },
+  {
+    "objectID": "home.html",
+    "href": "home.html",
+    "title": "GENIC",
+    "section": "",
+    "text": "Click the logo to start"
   }
 ]
