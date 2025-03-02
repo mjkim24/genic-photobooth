@@ -1,17 +1,10 @@
 [
   {
-    "objectID": "welcome.html",
-    "href": "welcome.html",
+    "objectID": "photostrip.html",
+    "href": "photostrip.html",
     "title": "GENIC",
     "section": "",
-    "text": "You have 3 seconds for each shot – no retakes!\nThis photobooth captures 4 pictures in a row, so strike your best pose and have fun!\nSTART"
-  },
-  {
-    "objectID": "photobooth.html",
-    "href": "photobooth.html",
-    "title": "GENIC",
-    "section": "",
-    "text": "Start"
+    "text": "---\ntitle: \"GENIC\"\nformat: html\n---\n\n\n\n\n    \n    \n    GENIC Photostrip\n    \n\n\n\n\nGENIC\nFrame Color\n\n    Black Frame\n    Pink Frame\n    Brown Frame\n    White Frame\n    No Frame"
   },
   {
     "objectID": "about.html",
@@ -28,17 +21,17 @@
     "text": "GENIC creates unforgettable customer experiences by transforming live moments into lasting art. Through our photo booths, we bring customers closer to the brands, turning each interaction into a timeless memory.\nAt our core, we make creativity accessible. GENIC is about giving attention to the moments that often pass us by, turning them into something timeless."
   },
   {
-    "objectID": "photostrip.html",
-    "href": "photostrip.html",
-    "title": "Photostrip Viewer",
-    "section": "",
-    "text": "Download Photostrip"
-  },
-  {
     "objectID": "home.html",
     "href": "home.html",
-    "title": "GENIC",
+    "title": "\nGENIC PHOTOBOOTH\n",
     "section": "",
-    "text": "Click the logo to start"
+    "text": "GENIC PHOTOBOOTH\n\n  \n\nClick the logo to start"
+  },
+  {
+    "objectID": "photobooth.html",
+    "href": "photobooth.html",
+    "title": "GENIC PHOTOBOOTH",
+    "section": "",
+    "text": "GENIC PHOTOBOOTH\n    \n\n\n\nGENIC PHOTOBOOTH\n\n\n3\n\n\n\n    \n    \n\n\n\nStart"
   }
 ]

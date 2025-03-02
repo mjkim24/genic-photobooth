@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>GENIC - Photostrip Viewer</title>
+<title>GENIC</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -24,7 +24,6 @@ ul.task-list li input[type="checkbox"] {
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
 <script src="site_libs/clipboard/clipboard.min.js"></script>
 <script src="site_libs/quarto-search/autocomplete.umd.js"></script>
 <script src="site_libs/quarto-search/fuse.min.js"></script>
@@ -40,11 +39,11 @@ ul.task-list li input[type="checkbox"] {
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
-  "location": "navbar",
+  "location": "sidebar",
   "copy-button": false,
   "collapse-after": 3,
-  "panel-placement": "end",
-  "type": "overlay",
+  "panel-placement": "start",
+  "type": "textbox",
   "limit": 50,
   "keyboard-shortcut": [
     "f",
@@ -70,40 +69,11 @@ ul.task-list li input[type="checkbox"] {
 
 </head>
 
-<body class="nav-fixed fullcontent">
+<body class="fullcontent">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
-      <div class="navbar-container container-fluid">
-      <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="./index.html">
-    <span class="navbar-title">GENIC</span>
-    </a>
-  </div>
-            <div id="quarto-search" class="" title="Search"></div>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
-  <span class="navbar-toggler-icon"></span>
-</button>
-          <div class="collapse navbar-collapse" id="navbarCollapse">
-            <ul class="navbar-nav navbar-nav-scroll me-auto">
-  <li class="nav-item">
-    <a class="nav-link" href="./home.html"> 
-<span class="menu-text">Home</span></a>
-  </li>  
-  <li class="nav-item">
-    <a class="nav-link" href="./about.html"> 
-<span class="menu-text">About</span></a>
-  </li>  
-</ul>
-          </div> <!-- /navcollapse -->
-          <div class="quarto-navbar-tools">
-</div>
-      </div> <!-- /container-fluid -->
-    </nav>
-</header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
 <!-- margin-sidebar -->
     
@@ -112,7 +82,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Photostrip Viewer</h1>
+<h1 class="title">GENIC</h1>
 </div>
 
 
@@ -129,62 +99,160 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<!-- Photostrip container styled to look like a classic photobooth strip -->
-<div id="photostrip" style="width: 220px; margin: 20px auto; border: 1px solid black; background-color: #f0f0f0; padding: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+---
+title: "GENIC"
+format: html
+---
+
+
+
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GENIC Photostrip</title>
+    <style>
+        /* Background Gradient */
+        body {
+            background: radial-gradient(circle, rgba(255, 153, 178, 0.5) 20%, rgba(255, 240, 245, 0.9) 40%, snow 70%);
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Frame Selection Buttons */
+        .button-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .btn-frame {
+            color: black;
+            background-color: white;
+            border: 2px solid black;
+            border-radius: 50px;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+            box-shadow: rgba(0, 0, 0, 0.2) 0px 4px 8px;
+        }
+
+        .btn-frame:hover, .btn-frame.active {
+            background-color: black;
+            color: white;
+        }
+
+        /* Photostrip container */
+        .photostrip-container {
+            position: relative;
+            width: 300px;  /* Slightly reduced for better fit */
+            height: 880px; /* Adjusted height */
+            margin: 20px auto;
+            overflow: hidden;
+        }
+
+        /* Frame overlay */
+        .frame-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            pointer-events: none; /* Allows clicking through to images */
+            z-index: 2; /* Ensures it is on top */
+        }
+
+        /* Photo alignment fixes */
+        .photo-slot {
+            position: absolute;
+            width: 250px; /* Reduced width to fit better */
+            height: 160px; /* Maintains 16:10 ratio */
+            left: 50%;
+            transform: translateX(-50%);
+            object-fit: cover;
+            border-radius: 1px;
+            z-index: 1; /* Keeps images behind frame */
+        }
+
+        /* Adjusted positions for better fit */
+        .photo-slot:nth-child(1) { top: 125px; }  
+        .photo-slot:nth-child(2) { top: 345px; }  
+        .photo-slot:nth-child(3) { top: 565px; }  
+        .photo-slot:nth-child(4) { top: 785px; }  /* FIXED last image positioning */
+
+        /* Responsive Styling */
+        @media (max-width: 768px) {
+            .photostrip-container {
+                width: 280px;
+                height: 800px;
+            }
+            .photo-slot {
+                width: 230px;
+                height: 160px;
+            }
+        }
+    </style>
+
+
+
+<!-- Frame Selection Buttons -->
+<h1><strong>GENIC</strong></h1>
+<h3 class="anchored">Frame Color</h3>
+<div class="button-container">
+    <button class="btn-frame" onclick="changeFrame(this, 'black.png')">Black Frame</button>
+    <button class="btn-frame" onclick="changeFrame(this, 'pink.png')">Pink Frame</button>
+    <button class="btn-frame" onclick="changeFrame(this, 'brown.png')">Brown Frame</button>
+    <button class="btn-frame" onclick="changeFrame(this, 'white.png')">White Frame</button>
+    <button class="btn-frame" onclick="changeFrame(this, 'black.png')">No Frame</button> <!-- No frame = black.png -->
 </div>
 
-<!-- Button to trigger the download -->
-<button id="download-button" style="display: block; margin: 20px auto; padding: 10px 20px;">Download Photostrip</button>
-
-<!-- Invisible canvas for compiling images -->
-<canvas id="canvas" style="display:none;"></canvas>
+<!-- Photostrip container -->
+<div class="photostrip-container" id="photostrip">
+    <div class="frame-overlay" id="frame-overlay"></div>
+</div>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const images = JSON.parse(localStorage.getItem('photostripImages'));
-    if (images && images.length) {
-        const strip = document.getElementById('photostrip');
-        images.forEach(src => {
-            const img = document.createElement('img');
-            img.src = src;
-            img.style.width = '200px'; // Set width to fit the photostrip
-            img.style.display = 'block'; // Stack images vertically
-            img.style.marginBottom = '10px'; // Space between photos
-            strip.appendChild(img);
-        });
+document.addEventListener('DOMContentLoaded', function () {
+    const images = JSON.parse(localStorage.getItem('photostripImages')) || [];
+    const strip = document.getElementById('photostrip');
+    const frameOverlay = document.getElementById('frame-overlay');
 
-        createDownloadableImage(images);
+    if (images.length === 0) {
+        strip.innerHTML = "<p style='text-align:center;'>No photos available.</p>";
+        return;
     }
-});
 
-function createDownloadableImage(images) {
-    const canvas = document.getElementById('canvas');
-    const ctx = canvas.getContext('2d');
-    canvas.width = 220; // Width of the photostrip
-    let yOffset = 0;
+    // Default frame
+    frameOverlay.style.backgroundImage = "url('black.png')";
 
-    images.forEach((src, index) => {
-        const img = new Image();
-        img.onload = function() {
-            if (index === 0) {
-                canvas.height = (img.height + 10) * images.length - 10; // Calculate total height with spacing
-            }
-            ctx.drawImage(img, 10, yOffset); // Center the image with some padding
-            yOffset += img.height + 10; // Move to the next position with spacing
-            if (index === images.length - 1) {
-                document.getElementById('download-button').onclick = function() {
-                    const dataURL = canvas.toDataURL('image/png');
-                    const link = document.createElement('a');
-                    link.download = 'photostrip.png';
-                    link.href = dataURL;
-                    link.click();
-                };
-            }
-        };
+    // Ensure only 4 images are displayed and align inside the blank spaces
+    images.slice(0, 4).forEach((src, index) => {
+        const img = document.createElement('img');
+        img.className = "photo-slot";
         img.src = src;
+        strip.appendChild(img);
     });
-}
+
+    // DEBUG: Log how many images are added
+    console.log(`Total images added: ${document.querySelectorAll('.photo-slot').length}`);
+
+    // Function to change the photostrip frame dynamically
+    window.changeFrame = function (button, frameFile) {
+        document.querySelectorAll('.btn-frame').forEach(btn => btn.classList.remove('active'));
+        button.classList.add('active');
+        frameOverlay.style.backgroundImage = `url('${frameFile}')`; // Change frame background
+    };
+});
 </script>
+
 
 
 

@@ -4,12 +4,6 @@ project:
 
 website:
   title: "GENIC"
-  navbar:
-    left:
-      - text: "Home"
-        href: home.qmd
-      - text: "About"
-        href: about.qmd
 
 format:
   html:
