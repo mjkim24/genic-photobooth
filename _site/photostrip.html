@@ -105,7 +105,8 @@ ul.task-list li input[type="checkbox"] {
             justify-content: center;
             flex-wrap: wrap;
             gap: 10px;
-            margin: 20px 0;
+            margin-top: 5px;
+            margin-bottom: 20px;
         }
 
 
@@ -133,15 +134,15 @@ ul.task-list li input[type="checkbox"] {
     color: black; /* Invert the text color on hover */
 }
 
-        .photostrip-container {
-            position: relative;
-            width: 600px;  /* Width of the frame */
-            height: 1800px; /* Height of the frame */
-            margin: 20px auto;
-            overflow: hidden;
-            transform: scale(0.45); /* Scale down to 45% of the original size */
-            transform-origin: top center; /* Ensures scaling happens from the top center */
-        }
+.photostrip-container {
+    position: relative;
+    width: 600px;
+    height: 1800px;
+    margin: 20px auto 5px; /* Reduced bottom margin from 10px to 5px */
+    overflow: hidden;
+    transform: scale(0.45);
+    transform-origin: top center;
+}
 
         /* Photo alignment and dimensions */
         .photo-slot {
@@ -173,12 +174,20 @@ ul.task-list li input[type="checkbox"] {
             z-index: 2; /* Ensures it is on top */
         }
 
+
+/* Email container */
+.email-container {
+    margin-top: 5px; /* Reduced from 10px to further close the gap */
+    text-align: center;
+}
+
+
     </style>
 
 
 
 <!-- Frame Selection Buttons -->
-<h1><strong>GENIC</strong></h1>
+ <img src="logo.png" alt="GENIC Logo" style="width: 50px; height: auto;">
 <div class="button-container">
     <button class="btn-frame" onclick="changeFrame(this, 'pink.png')">Pink Frame</button>
     <button class="btn-frame" onclick="changeFrame(this, 'brown.png')">Brown Frame</button>
@@ -190,7 +199,12 @@ ul.task-list li input[type="checkbox"] {
 <div class="photostrip-container" id="photostrip">
     <div class="frame-overlay" id="frame-overlay"></div>
 </div>
-
+<div class="email-container">
+    <input type="email" id="email" placeholder="Enter your email" required="">
+    <button class="btn-frame" onclick="sendEmail()">Send Photo</button>
+    <button class="btn-frame" onclick="downloadImage()">Download Image</button>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     const images = JSON.parse(localStorage.getItem('photostripImages')) || [];
@@ -220,39 +234,57 @@ document.addEventListener('DOMContentLoaded', function () {
         frameOverlay.style.backgroundImage = `url('${frameFile}')`; // Change frame background
     };
 });
-</script>
+function captureAndProcessImage() {
+    const strip = document.getElementById('photostrip');
+    html2canvas(strip, { logging: true, useCORS: true }).then(canvas => {
+        // Convert canvas to data URL
+        const dataUrl = canvas.toDataURL('image/png');
 
-
-
-<div class="email-container">
-    <input type="email" id="email" placeholder="Enter your email" required="">
-    <button class="btn-frame" onclick="sendEmail()">Send Photo</button>
-</div>
-<script>
-function sendEmail() {
-    const email = document.getElementById('email').value;
-    if (!email) {
-        alert('Please enter a valid email address.');
-        return;
-    }
-
-    fetch('/send-photo', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email: email, photo: 'link/to/photo.pdf' })
-    })
-    .then(response => response.json())
-    .then(data => {
-        alert('Email sent successfully!');
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert('Failed to send email.');
+        // Optionally convert to blob if needed for email
+        canvas.toBlob(blob => {
+            window.currentPhotoBlob = blob;
+            window.currentPhotoDataUrl = dataUrl;
+            console.log("Image captured and processed for both download and email.");
+        }, 'image/png');
+    }).catch(error => {
+        console.error('Error capturing canvas:', error);
     });
 }
+
+function downloadImage() {
+    if (window.currentPhotoDataUrl) {
+        const a = document.createElement('a');
+        a.href = window.currentPhotoDataUrl;
+        a.download = 'genic-photostrip.png';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    } else {
+        alert("Please capture the image first.");
+    }
+}
+
+function downloadImage() {
+    const strip = document.getElementById('photostrip');
+    html2canvas(strip, { logging: true, useCORS: true }).then(canvas => {
+        canvas.toBlob(function(blob) {
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'genic-photostrip.png'; // Name of the download file
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }, 'image/png');
+    }).catch(error => {
+        console.error('Error capturing canvas:', error);
+    });
+}
+
 </script>
+
+
 
 
 
