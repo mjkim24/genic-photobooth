@@ -80,29 +80,8 @@ ul.task-list li input[type="checkbox"] {
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
-<h1 class="title">GENIC</h1>
-</div>
 
 
-
-<div class="quarto-title-meta">
-
-    
-  
-    
-  </div>
-  
-
-
-</header>
-
-
----
-title: "GENIC"
-format: html
----
 
 
 
@@ -111,9 +90,9 @@ format: html
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GENIC Photostrip</title>
     <style>
-        /* Background Gradient */
+        /* Background */
         body {
-            background: radial-gradient(circle, rgba(255, 153, 178, 0.5) 20%, rgba(255, 240, 245, 0.9) 40%, snow 70%);
+            background: #FFFFFF; /* Plain white background */
             font-family: Arial, sans-serif;
             text-align: center;
             margin: 0;
@@ -129,32 +108,56 @@ format: html
             margin: 20px 0;
         }
 
-        .btn-frame {
-            color: black;
-            background-color: white;
-            border: 2px solid black;
-            border-radius: 50px;
-            padding: 10px 20px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease-in-out;
-            box-shadow: rgba(0, 0, 0, 0.2) 0px 4px 8px;
-        }
 
-        .btn-frame:hover, .btn-frame.active {
-            background-color: black;
-            color: white;
-        }
+.btn-frame {
+    background-color: black; /* Set initial background color to black */
+    color: white; /* Set text color to white */
+    border: 2px solid black; /* Maintain the black border */
+    border-radius: 8px; /* Rounded corners but less than previously */
+    padding: 12px 24px; /* Slightly larger padding for better clickability */
+    font-size: 16px; /* Standard text size */
+    font-weight: bold; /* Bold text for visibility */
+    cursor: pointer; /* Cursor indicates clickable */
+    transition: all 0.3s ease-in-out; /* Smooth transition for hover effects */
+    margin-top: 20px; /* Add margin to the top for spacing */
+}
 
-        /* Photostrip container */
+.btn-frame.active {
+    background-color: white; /* White background for active state */
+    color: black; /* Black text for active state */
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2); /* Optional: adds a shadow to highlight the active button */
+}
+
+.btn-frame:hover {
+    background-color: white; /* Invert the background color on hover */
+    color: black; /* Invert the text color on hover */
+}
+
         .photostrip-container {
             position: relative;
-            width: 300px;  /* Slightly reduced for better fit */
-            height: 880px; /* Adjusted height */
+            width: 600px;  /* Width of the frame */
+            height: 1800px; /* Height of the frame */
             margin: 20px auto;
             overflow: hidden;
+            transform: scale(0.45); /* Scale down to 45% of the original size */
+            transform-origin: top center; /* Ensures scaling happens from the top center */
         }
+
+        /* Photo alignment and dimensions */
+        .photo-slot {
+            position: absolute;
+            width: 600px; /* Full width */
+            height: 375px; /* Calculated height (16:10 ratio, 600x375) */
+            left: 0; /* Align left */
+            object-fit: cover;
+            z-index: 1; /* Keeps images behind frame */
+        }
+
+        /* Adjusted positions for slots */
+        .photo-slot:nth-child(1) { top: 0px; }
+        .photo-slot:nth-child(2) { top: 370px; }
+        .photo-slot:nth-child(3) { top: 750px; }
+        .photo-slot:nth-child(4) { top: 1120px; }
 
         /* Frame overlay */
         .frame-overlay {
@@ -170,44 +173,13 @@ format: html
             z-index: 2; /* Ensures it is on top */
         }
 
-        /* Photo alignment fixes */
-        .photo-slot {
-            position: absolute;
-            width: 250px; /* Reduced width to fit better */
-            height: 160px; /* Maintains 16:10 ratio */
-            left: 50%;
-            transform: translateX(-50%);
-            object-fit: cover;
-            border-radius: 1px;
-            z-index: 1; /* Keeps images behind frame */
-        }
-
-        /* Adjusted positions for better fit */
-        .photo-slot:nth-child(1) { top: 125px; }  
-        .photo-slot:nth-child(2) { top: 345px; }  
-        .photo-slot:nth-child(3) { top: 565px; }  
-        .photo-slot:nth-child(4) { top: 785px; }  /* FIXED last image positioning */
-
-        /* Responsive Styling */
-        @media (max-width: 768px) {
-            .photostrip-container {
-                width: 280px;
-                height: 800px;
-            }
-            .photo-slot {
-                width: 230px;
-                height: 160px;
-            }
-        }
     </style>
 
 
 
 <!-- Frame Selection Buttons -->
 <h1><strong>GENIC</strong></h1>
-<h3 class="anchored">Frame Color</h3>
 <div class="button-container">
-    <button class="btn-frame" onclick="changeFrame(this, 'black.png')">Black Frame</button>
     <button class="btn-frame" onclick="changeFrame(this, 'pink.png')">Pink Frame</button>
     <button class="btn-frame" onclick="changeFrame(this, 'brown.png')">Brown Frame</button>
     <button class="btn-frame" onclick="changeFrame(this, 'white.png')">White Frame</button>
@@ -241,9 +213,6 @@ document.addEventListener('DOMContentLoaded', function () {
         strip.appendChild(img);
     });
 
-    // DEBUG: Log how many images are added
-    console.log(`Total images added: ${document.querySelectorAll('.photo-slot').length}`);
-
     // Function to change the photostrip frame dynamically
     window.changeFrame = function (button, frameFile) {
         document.querySelectorAll('.btn-frame').forEach(btn => btn.classList.remove('active'));
@@ -251,6 +220,38 @@ document.addEventListener('DOMContentLoaded', function () {
         frameOverlay.style.backgroundImage = `url('${frameFile}')`; // Change frame background
     };
 });
+</script>
+
+
+
+<div class="email-container">
+    <input type="email" id="email" placeholder="Enter your email" required="">
+    <button class="btn-frame" onclick="sendEmail()">Send Photo</button>
+</div>
+<script>
+function sendEmail() {
+    const email = document.getElementById('email').value;
+    if (!email) {
+        alert('Please enter a valid email address.');
+        return;
+    }
+
+    fetch('/send-photo', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email: email, photo: 'link/to/photo.pdf' })
+    })
+    .then(response => response.json())
+    .then(data => {
+        alert('Email sent successfully!');
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Failed to send email.');
+    });
+}
 </script>
 
 
