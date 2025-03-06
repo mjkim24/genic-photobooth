@@ -131,6 +131,7 @@ body {
             height: 400px;
             object-fit: cover;
             box-shadow: rgba(0, 0, 0, 0.2) 0px 4px 8px;
+            transform: scaleX(-1)
         }
 
         /* Countdown Timer */
@@ -240,33 +241,31 @@ body {
     storePhoto(dataUrl);
   }
 
-  async function startSession() {
-    strip.innerHTML = '';
-    localStorage.removeItem('photostripImages');
+async function startSession() {
+    strip.innerHTML = ''; // Clear previous photos
+    localStorage.removeItem('photostripImages'); // Clear stored images if any
     startBtn.disabled = true;
     startBtn.innerText = "Shooting in progress";
 
-    const totalShots = 4;
-    for (let i = 3; i >= 1; i--) {
-      countdownEl.textContent = `${i}`;
-      await new Promise(resolve => setTimeout(resolve, 1000));
-    }
-    countdownEl.textContent = "";
-
+    const totalShots = 4; // Total number of photos to take
     for (let i = 1; i <= totalShots; i++) {
-      capturePhoto();
-      if (i === totalShots) { 
-        redirectToPhotostrip();
-      }
-      await new Promise(resolve => setTimeout(resolve, 1000));
+        // Reset and run the countdown for each photo
+        for (let count = 3; count >= 1; count--) {
+            countdownEl.textContent = count.toString();
+            await new Promise(resolve => setTimeout(resolve, 1000)); // Wait for one second
+        }
+        countdownEl.textContent = ""; // Clear countdown before capturing photo
+        capturePhoto(); // Capture the photo
     }
 
+    // After all photos are taken
+    redirectToPhotostrip(); // Redirect if needed or finalize session
     startBtn.innerText = "Start";
-    startBtn.disabled = false;
-  }
+    startBtn.disabled = false; // Enable the button for next session
+}
 
-  initCamera();
-  startBtn.addEventListener('click', startSession);
+initCamera(); // Initialize the camera when the document is ready
+startBtn.addEventListener('click', startSession); // Start the session on button click
 
   function redirectToPhotostrip() {
     window.location.href = 'photostrip.html';

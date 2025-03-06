@@ -88,18 +88,19 @@ ul.task-list li input[type="checkbox"] {
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GENIC Photostrip</title>
     <style>
-        /* Background */
         body {
-            background: #FFFFFF; /* Plain white background */
+            display: flex;
+            background: #FFFFFF; 
             font-family: Arial, sans-serif;
             text-align: center;
             margin: 0;
             padding: 0;
+            justify-content: flex-start;
+            flex-direction:column;
         }
+        
 
-        /* Frame Selection Buttons */
         .button-container {
             display: flex;
             justify-content: center;
@@ -107,60 +108,57 @@ ul.task-list li input[type="checkbox"] {
             gap: 10px;
             margin-top: 5px;
             margin-bottom: 20px;
-        }
-
-
-.btn-frame {
-    background-color: black; /* Set initial background color to black */
-    color: white; /* Set text color to white */
-    border: 2px solid black; /* Maintain the black border */
-    border-radius: 8px; /* Rounded corners but less than previously */
-    padding: 12px 24px; /* Slightly larger padding for better clickability */
-    font-size: 16px; /* Standard text size */
-    font-weight: bold; /* Bold text for visibility */
-    cursor: pointer; /* Cursor indicates clickable */
-    transition: all 0.3s ease-in-out; /* Smooth transition for hover effects */
-    margin-top: 20px; /* Add margin to the top for spacing */
-}
-
-.btn-frame.active {
-    background-color: white; /* White background for active state */
-    color: black; /* Black text for active state */
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2); /* Optional: adds a shadow to highlight the active button */
-}
-
-.btn-frame:hover {
-    background-color: white; /* Invert the background color on hover */
-    color: black; /* Invert the text color on hover */
-}
-
+            }
+        .btn-frame {
+            background-color: black; 
+            color: white;
+            border: 2px solid black;
+            border-radius: 8px; 
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: bold;  
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+            margin-top: 20px; 
+            }
+            .btn-frame.active {
+            background-color: white;
+            color: black; 
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+            }
+            .btn-frame:hover {
+            background-color: white;
+            color: black;
+            }
 .photostrip-container {
+    background:transparent;
     position: relative;
-    width: 600px;
-    height: 1800px;
-    margin: 20px auto 5px; /* Reduced bottom margin from 10px to 5px */
+    width: 500px;
+    height: 810px;
+    margin: 20px auto 5px;
     overflow: hidden;
-    transform: scale(0.45);
+    transform: scale(1);
     transform-origin: top center;
+    margin-bottom: 10px;
+    
 }
 
-        /* Photo alignment and dimensions */
         .photo-slot {
             position: absolute;
-            width: 600px; /* Full width */
-            height: 375px; /* Calculated height (16:10 ratio, 600x375) */
-            left: 0; /* Align left */
+            width: 600px;
+            height: 375px; 
+            left: -49.758px; 
             object-fit: cover;
-            z-index: 1; /* Keeps images behind frame */
+            z-index: 1; 
+            transform: scale(0.45);
+            transform-origin: top center;
         }
 
-        /* Adjusted positions for slots */
         .photo-slot:nth-child(1) { top: 0px; }
-        .photo-slot:nth-child(2) { top: 370px; }
-        .photo-slot:nth-child(3) { top: 750px; }
-        .photo-slot:nth-child(4) { top: 1120px; }
+        .photo-slot:nth-child(2) { top: 170px; }
+        .photo-slot:nth-child(3) { top: 340px; }
+        .photo-slot:nth-child(4) { top: 509px; }
 
-        /* Frame overlay */
         .frame-overlay {
             position: absolute;
             top: 0;
@@ -170,23 +168,27 @@ ul.task-list li input[type="checkbox"] {
             background-size: contain;
             background-repeat: no-repeat;
             background-position: center;
-            pointer-events: none; /* Allows clicking through to images */
-            z-index: 2; /* Ensures it is on top */
+            pointer-events: none; 
+            z-index: 2;
         }
-
-
-/* Email container */
-.email-container {
-    margin-top: 5px; /* Reduced from 10px to further close the gap */
-    text-align: center;
-}
-
-
+        .email-container {
+            margin-top: 20px;
+            width: 100%;
+            text-align: center;
+        }
+        .preload {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+    opacity: 0;
+    }
     </style>
 
 
 
-<!-- Frame Selection Buttons -->
  <img src="logo.png" alt="GENIC Logo" style="width: 50px; height: auto;">
 <div class="button-container">
     <button class="btn-frame" onclick="changeFrame(this, 'pink.png')">Pink Frame</button>
@@ -195,93 +197,126 @@ ul.task-list li input[type="checkbox"] {
     <button class="btn-frame" onclick="changeFrame(this, 'black.png')">No Frame</button> <!-- No frame = black.png -->
 </div>
 
-<!-- Photostrip container -->
+<div id="preload-frames" class="preload">
+    <img src="pink.png" alt="preload image">
+    <img src="brown.png" alt="preload image">
+    <img src="white.png" alt="preload image">
+    <img src="black.png" alt="preload image">
+</div>
+
 <div class="photostrip-container" id="photostrip">
     <div class="frame-overlay" id="frame-overlay"></div>
 </div>
 <div class="email-container">
-    <input type="email" id="email" placeholder="Enter your email" required="">
-    <button class="btn-frame" onclick="sendEmail()">Send Photo</button>
-    <button class="btn-frame" onclick="downloadImage()">Download Image</button>
+    <form id="emailForm">
+        <input type="email" id="email" placeholder="Enter your email" required="">
+        <button type="button" class="btn-frame" onclick="sendEmail()">Send Photo</button>
+        <button type="button" class="btn-frame" onclick="downloadImage()">Download Image</button>
+    </form>
 </div>
+</main></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+
 <script>
+
 document.addEventListener('DOMContentLoaded', function () {
+    // Load images into the photostrip container
+    const preloadImages = ['pink.png', 'brown.png', 'white.png', 'black.png'];
+    preloadImages.forEach(image => {
+        const img = new Image();
+        img.src = image;
+    });
     const images = JSON.parse(localStorage.getItem('photostripImages')) || [];
     const strip = document.getElementById('photostrip');
     const frameOverlay = document.getElementById('frame-overlay');
-
     if (images.length === 0) {
         strip.innerHTML = "<p style='text-align:center;'>No photos available.</p>";
         return;
     }
-
-    // Default frame
-    frameOverlay.style.backgroundImage = "url('black.png')";
-
-    // Ensure only 4 images are displayed and align inside the blank spaces
     images.slice(0, 4).forEach((src, index) => {
         const img = document.createElement('img');
         img.className = "photo-slot";
         img.src = src;
         strip.appendChild(img);
     });
-
-    // Function to change the photostrip frame dynamically
+    frameOverlay.style.backgroundImage = "url('black.png')";
     window.changeFrame = function (button, frameFile) {
         document.querySelectorAll('.btn-frame').forEach(btn => btn.classList.remove('active'));
         button.classList.add('active');
-        frameOverlay.style.backgroundImage = `url('${frameFile}')`; // Change frame background
+        frameOverlay.style.backgroundImage = `url('${frameFile}')`;
     };
 });
-function captureAndProcessImage() {
-    const strip = document.getElementById('photostrip');
-    html2canvas(strip, { logging: true, useCORS: true }).then(canvas => {
-        // Convert canvas to data URL
-        const dataUrl = canvas.toDataURL('image/png');
+document.getElementById('emailForm').addEventListener('submit', function(event) {
+        event.preventDefault(); 
+        const email = document.getElementById('email').value;
+        const subject = document.getElementById('subject').value;
+        const message = document.getElementById('message').value;
 
-        // Optionally convert to blob if needed for email
-        canvas.toBlob(blob => {
-            window.currentPhotoBlob = blob;
-            window.currentPhotoDataUrl = dataUrl;
-            console.log("Image captured and processed for both download and email.");
-        }, 'image/png');
-    }).catch(error => {
-        console.error('Error capturing canvas:', error);
+        html2canvas(document.getElementById('photostrip')).then(canvas => {
+            const imageData = canvas.toDataURL('image/png');
+            fetch('http://localhost:5000/send-photo', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email, imageData, subject, message })
+            })
+            .then(response => response.json())
+            .then(data => alert('Email sent successfully!'))
+            .catch(error => console.error('Error:', error));
+        });
+    });
+
+
+
+// Combined functions for sending email and downloading image
+function sendEmail() {
+    const email = document.getElementById('email').value;
+    if (!email) {
+        alert('Please enter an email address.');
+        return; // Exit if no email is provided.
+    }
+
+    html2canvas(document.getElementById('photostrip'),{backgroundColor:null}).then(canvas => {
+        const imageData = canvas.toDataURL('image/png');
+        fetch('http://localhost:5000/send-photo', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ email, imageData })
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert('Email sent successfully!');
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Failed to send email.');
+        });
     });
 }
 
 function downloadImage() {
-    if (window.currentPhotoDataUrl) {
-        const a = document.createElement('a');
-        a.href = window.currentPhotoDataUrl;
-        a.download = 'genic-photostrip.png';
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-    } else {
-        alert("Please capture the image first.");
-    }
-}
-
-function downloadImage() {
-    const strip = document.getElementById('photostrip');
-    html2canvas(strip, { logging: true, useCORS: true }).then(canvas => {
-        canvas.toBlob(function(blob) {
+    html2canvas(document.getElementById('photostrip'),{backgroundColor:null}).then(canvas => {
+        canvas.toBlob(blob => {
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = 'genic-photostrip.png'; // Name of the download file
+            a.download = 'genic-photostrip.png';
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
         }, 'image/png');
-    }).catch(error => {
-        console.error('Error capturing canvas:', error);
+    }).catch(error => console.error('Error capturing canvas:', error));
+}
+function testCanvasCapture() {
+    html2canvas(document.getElementById('photostrip')).then(canvas => {
+        document.body.appendChild(canvas); // This will add the captured canvas to your webpage for visual confirmation
     });
 }
-
 </script>
 
 
@@ -289,7 +324,7 @@ function downloadImage() {
 
 
 
-</main> <!-- /main -->
+ <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -672,7 +707,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script>
-</div> <!-- /content -->
+ <!-- /content -->
 
 
 

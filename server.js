@@ -1,70 +1,42 @@
 require('dotenv').config();
-const express = require('express');
-const bodyParser = require('body-parser');
+console.log('Email Username:', process.env.EMAIL_USERNAME);
 const nodemailer = require('nodemailer');
-const { MongoClient } = require('mongodb');
 
-const app = express();
-app.use(bodyParser.json());
-const port = process.env.PORT || 3000;
-
-// MongoDB connection
-const client = new MongoClient(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true });
-
-
-
-async function connectDB() {
-    await client.connect();
-    console.log("Connected successfully to MongoDB");
-    return client.db(process.env.DB_NAME);
-}
 const transporter = nodemailer.createTransport({
-    host: process.env.EMAIL_HOST,
-    port: process.env.EMAIL_PORT,
-    secure: false, // True if port is 465, false for other ports like 587
+    service: 'gmail',
     auth: {
         user: process.env.EMAIL_USERNAME,
         pass: process.env.EMAIL_PASSWORD
     }
 });
 
-
-async function sendEmail(email, frameUrl) {
-    const mailOptions = {
-        from: process.env.EMAIL_USERNAME,
-        to: email,
-        subject: 'Your Photostrip from GENIC',
-        text: 'Attached is your photostrip with the chosen frame. Enjoy!',
-        attachments: [
-            { filename: 'photostrip.pdf', path: frameUrl }
-        ]
-    };
-
-    let info = await transporter.sendMail(mailOptions);
-    return info;
-}
-
+const cors = require('cors');
+app.use(cors({
+    origin: 'http://localhost:3000', // or your frontend URL
+    credentials: true
+}));
 
 app.post('/send-photo', async (req, res) => {
-    const { email, frameUrl, consent } = req.body;
-
-    if (consent !== true) {
-        return res.status(403).send({ message: 'Consent for promotional emails is required.' });
-    }
+    const { email, imageData, subject, message } = req.body;
+    const mailOptions = {
+        from: marketing@genic.film
+        to: email,
+        subject: subject || 'Your GENIC Photostrip',
+        html: `<p>${message || 'Attached is your photostrip.'}</p>`,
+        attachments: [{
+            filename: 'genic-photostrip.png',
+            content: imageData.split("base64,")[1],
+            encoding: 'base64'
+        }]
+    };
 
     try {
-        const db = await connectDB();
-        const collection = db.collection('emails');
-        await collection.insertOne({ email: email, consent: consent });
-
-        const emailInfo = await sendEmail(email, frameUrl);
-        res.send({ success: true, message: 'Email sent successfully', id: emailInfo.messageId });
+        let info = await transporter.sendMail(mailOptions);
+        console.log('Email sent:', info.response);
+        res.json({ message: 'Email sent successfully!' });
     } catch (error) {
-        console.error(error);
-        res.status(500).send({ success: false, message: 'Failed to send email', error: error.message });
+        console.error('Error sending email:', error);
+        res.status(500).json({ message: 'Failed to send email', error: error.message });
     }
 });
 
-app.listen(port, () => {
-    console.log(`Server running on port ${port}`);
-});
