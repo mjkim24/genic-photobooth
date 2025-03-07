@@ -209,19 +209,17 @@ ul.task-list li input[type="checkbox"] {
 </div>
 <div class="email-container">
     <form id="emailForm">
-        <input type="email" id="email" placeholder="Enter your email" required="">
+        <input type="email" id="email" placeholder="Enter your email" required="" autocomplete="email">
         <button type="button" class="btn-frame" onclick="sendEmail()">Send Photo</button>
         <button type="button" class="btn-frame" onclick="downloadImage()">Download Image</button>
     </form>
 </div>
 </main></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-
-
+console.log('Script loaded');
 <script>
-
 document.addEventListener('DOMContentLoaded', function () {
-    // Load images into the photostrip container
+    // Preload images
     const preloadImages = ['pink.png', 'brown.png', 'white.png', 'black.png'];
     preloadImages.forEach(image => {
         const img = new Image();
@@ -247,44 +245,22 @@ document.addEventListener('DOMContentLoaded', function () {
         frameOverlay.style.backgroundImage = `url('${frameFile}')`;
     };
 });
-document.getElementById('emailForm').addEventListener('submit', function(event) {
-        event.preventDefault(); 
-        const email = document.getElementById('email').value;
-        const subject = document.getElementById('subject').value;
-        const message = document.getElementById('message').value;
 
-        html2canvas(document.getElementById('photostrip')).then(canvas => {
-            const imageData = canvas.toDataURL('image/png');
-            fetch('http://localhost:5000/send-photo', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ email, imageData, subject, message })
-            })
-            .then(response => response.json())
-            .then(data => alert('Email sent successfully!'))
-            .catch(error => console.error('Error:', error));
-        });
-    });
-
-
-
-// Combined functions for sending email and downloading image
-function sendEmail() {
+// Attach sendEmail to the window so it’s available globally
+alert('sendEmail triggered');
+window.sendEmail = function() {
     const email = document.getElementById('email').value;
     if (!email) {
         alert('Please enter an email address.');
-        return; // Exit if no email is provided.
+        return;
     }
-
-    html2canvas(document.getElementById('photostrip'),{backgroundColor:null}).then(canvas => {
+    
+    html2canvas(document.getElementById('photostrip'), { backgroundColor: null }).then(canvas => {
         const imageData = canvas.toDataURL('image/png');
+        console.log('Captured image data:', imageData);
         fetch('http://localhost:5000/send-photo', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email, imageData })
         })
         .then(response => response.json())
@@ -292,14 +268,14 @@ function sendEmail() {
             alert('Email sent successfully!');
         })
         .catch(error => {
-            console.error('Error:', error);
+            console.error('Error sending email:', error);
             alert('Failed to send email.');
         });
     });
-}
+};
 
-function downloadImage() {
-    html2canvas(document.getElementById('photostrip'),{backgroundColor:null}).then(canvas => {
+window.downloadImage = function() {
+    html2canvas(document.getElementById('photostrip'), { backgroundColor: null }).then(canvas => {
         canvas.toBlob(blob => {
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
@@ -311,12 +287,13 @@ function downloadImage() {
             URL.revokeObjectURL(url);
         }, 'image/png');
     }).catch(error => console.error('Error capturing canvas:', error));
-}
-function testCanvasCapture() {
-    html2canvas(document.getElementById('photostrip')).then(canvas => {
-        document.body.appendChild(canvas); // This will add the captured canvas to your webpage for visual confirmation
-    });
-}
+};
+
+window.testCanvasCapture = function() {
+    html2canvas(document.getElementById('photostrip'), { backgroundColor: null }).then(canvas => {
+        document.body.appendChild(canvas);
+    }).catch(error => console.error('Error capturing canvas:', error));
+};
 </script>
 
 
