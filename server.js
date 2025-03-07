@@ -7,13 +7,23 @@ const app = express();
 
 // Middleware to parse JSON and URL-encoded data
 app.use(express.json());
+
 app.use(express.urlencoded({ extended: true }));
 
 // Set up CORS to allow requests from your front-end origin
-app.use(cors({
-  origin: 'http://localhost:3389'
-}));
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+  res.header('Access-Control-Allow-Origin', origin);
+  res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type');
+  next();
+});
+app.use(cors());
  app.options('*', cors());
+ 
+app.get('/', (req, res) => {
+  res.send('Server is running!');
+});
 
 // Log the email username for debugging
 console.log('Email Username:', process.env.EMAIL_USERNAME);
@@ -54,5 +64,5 @@ app.post('/send-photo', async (req, res) => {
 });
 
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));

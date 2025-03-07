@@ -1,8 +1,4 @@
 - source: project
   netlify:
-    - id: 5eefb904-c6b3-44e9-b01e-6ed11305627a
-      url: 'https://genicfilm.netlify.app'
-    - id: 0183fdb5-fc1e-4558-8601-d43ee8585ff4
-      url: 'https://golden-quokka-83a40a.netlify.app'
-    - id: a6eb6498-3cdc-4cd9-b124-fbc0e0b696ff
+    - id: a0c8b690-c500-47a2-b417-4d8440f33bba
       url: 'https://genicfilm.netlify.app'

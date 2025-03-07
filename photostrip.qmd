@@ -165,7 +165,6 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 // Attach sendEmail to the window so it’s available globally
-alert('sendEmail triggered');
 window.sendEmail = function() {
     const email = document.getElementById('email').value;
     if (!email) {
@@ -176,11 +175,11 @@ window.sendEmail = function() {
     html2canvas(document.getElementById('photostrip'), { backgroundColor: null }).then(canvas => {
         const imageData = canvas.toDataURL('image/png');
         console.log('Captured image data:', imageData);
-        fetch('http://localhost:5000/send-photo', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, imageData })
-        })
+        fetch('http://localhost:5001/send-photo', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ email, imageData })
+})
         .then(response => response.json())
         .then(data => {
             alert('Email sent successfully!');
